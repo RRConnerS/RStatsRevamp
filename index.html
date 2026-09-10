@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Client Administration Concept</title>
@@ -55,12 +53,6 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
 .section-title h3{margin:0;font-size:15px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .field label{display:block;font-weight:700;margin-bottom:6px}
-.label-with-info{display:flex;align-items:center;gap:7px}
-.info-icon{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border:1px solid #98a2b3;border-radius:50%;font-size:11px;font-weight:800;color:#667085;cursor:help;position:relative}
-.info-icon .tooltip{position:absolute;left:24px;top:-8px;width:290px;background:#101828;color:#fff;padding:10px 12px;border-radius:9px;font-size:12px;line-height:1.45;font-weight:500;box-shadow:0 8px 20px rgba(16,24,40,.18);opacity:0;visibility:hidden;transform:translateY(3px);transition:.15s ease;z-index:20}
-.info-icon:hover .tooltip,.info-icon:focus .tooltip{opacity:1;visibility:visible;transform:translateY(0)}
-.group-filter{display:flex;align-items:center;gap:8px}
-.group-filter select{border:1px solid var(--line);border-radius:9px;padding:7px 30px 7px 9px;background:#fff;color:var(--text)}
 .field input[type=text],.field input[type=number]{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 11px;outline:none;background:#fff}
 .field input:focus{border-color:#a5b4fc;box-shadow:0 0 0 3px #eef2ff}
 .field.full{grid-column:1/-1}
@@ -114,7 +106,7 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
       <section class="panel">
         <div class="panel-head">
           <h2>Clients</h2>
-          <span id="clientCount" class="client-meta"></span>
+          <span id="clientCount" class="client-meta">3 total</span>
         </div>
         <div class="panel-body" style="padding-bottom:10px">
           <div class="search">
@@ -123,17 +115,17 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
           </div>
         </div>
         <div id="clientList" class="client-list">
-    <div class="client-item " data-id="59fd5ae8-8143-490c-b2f8-1901cc22e3ea">
+    <div class="client-item " data-id="e30e94e0-9243-40a2-9cff-26b07a08db9a">
       <div><div class="client-name">Northstar Transport</div><div class="client-meta">NT-10021</div></div>
       <span class="status active">Active</span>
     </div>
   
-    <div class="client-item " data-id="f9c935c4-bf42-4c64-ad1b-49094e868281">
+    <div class="client-item " data-id="ced8e204-04f9-40c0-b8de-23b9511dd96b">
       <div><div class="client-name">Summit Freight</div><div class="client-meta">SF-10022</div></div>
       <span class="status active">Active</span>
     </div>
   
-    <div class="client-item " data-id="042384ad-18ac-4d2d-aedb-4de01b8ffbb3">
+    <div class="client-item " data-id="204fd869-e29f-4d35-a606-8bd4a1437639">
       <div><div class="client-name">Blue Ridge Logistics</div><div class="client-meta">BR-10023</div></div>
       <span class="status inactive">Inactive</span>
     </div>
@@ -143,7 +135,7 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
       <section class="panel">
         <div class="panel-head">
           <h2 id="formTitle">New client</h2>
-          <button id="deleteClientBtn" class="btn small danger">Delete client</button>
+          <button id="deleteClientBtn" class="btn small danger" style="visibility: hidden;">Delete client</button>
         </div>
         <div class="panel-body">
           <div class="section">
@@ -162,19 +154,19 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
               </div>
               <div class="field">
                 <label class="label-with-info" for="accountNumber">Account number
-  <span class="info-icon" tabindex="0">i
-    <span class="tooltip">The unique account identifier for this client. Use the account number your team uses to identify the client across internal systems. Duplicate account numbers are blocked in this demo.</span>
-  </span>
-</label>
+                  <span class="info-icon" tabindex="0">i
+                  <span class="tooltip">The unique account identifier for this client. Use the account number your team uses to identify the client across internal systems. Duplicate account numbers are blocked in this demo.</span>
+                  </span>
+                </label>
                 <input id="accountNumber" type="text" placeholder="Unique account number">
                 <div class="helper">Must be unique across clients.</div>
               </div>
               <div class="field">
                 <label class="label-with-info" for="zoomNumber">Zoom account #
-  <span class="info-icon" tabindex="0">i
-    <span class="tooltip">The Zoom account number associated with this client. Use Generate to create a placeholder number in this front-end concept. In production, this could be populated or validated against your Zoom workflow.</span>
-  </span>
-</label>
+                  <span class="info-icon" tabindex="0">i
+                  <span class="tooltip">The Zoom account number associated with this client. Use Generate to create a placeholder number in this front-end concept. In production, this could be populated or validated against your Zoom workflow.</span>
+                  </span>
+                </label>
                 <div class="account-row">
                   <input id="zoomNumber" type="text" placeholder="Not generated">
                   <button class="btn small" id="generateZoomBtn">Generate</button>
@@ -183,7 +175,19 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
               </div>
               <div class="field full">
                 <label>Client groups</label>
-                <div id="groups" class="chips"></div>
+                <div id="groups" class="chips">
+    <label class="chip"><input type="checkbox" value="Recruiting"> Recruiting</label>
+  
+    <label class="chip"><input type="checkbox" value="Transportation"> Transportation</label>
+  
+    <label class="chip"><input type="checkbox" value="Enterprise"> Enterprise</label>
+  
+    <label class="chip"><input type="checkbox" value="Priority"> Priority</label>
+  
+    <label class="chip"><input type="checkbox" value="Pilot"> Pilot</label>
+  
+    <label class="chip"><input type="checkbox" value="Internal"> Internal</label>
+  </div>
                 <div class="helper">A client can belong to one or multiple groups.</div>
               </div>
             </div>
@@ -195,7 +199,11 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
               <button class="btn small" id="addRecruiterBtn">+ Add recruiter</button>
             </div>
             <div class="panel" style="box-shadow:none">
-              <div id="recruiterTableWrap"></div>
+              <div id="recruiterTableWrap">
+    <table class="table">
+      <thead><tr><th>Recruiter name</th><th></th></tr></thead>
+      <tbody><tr><td colspan="2" class="empty">No recruiters added yet.</td></tr></tbody>
+    </table></div>
             </div>
           </div>
 
@@ -205,7 +213,7 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
               <button class="btn small" id="addMappingBtn">+ Add mapping</button>
             </div>
             <div class="note">Example: <strong>Jamie</strong> → <strong>James</strong>. The left side is the name detected in a transcript; the right side is the name you want returned.</div>
-            <div id="mappingWrap"></div>
+            <div id="mappingWrap"><div class="empty" style="padding:20px 0">No mappings added yet.</div></div>
           </div>
         </div>
       </section>
@@ -215,15 +223,7 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
 <div id="toast" class="toast"></div>
 
 <script>
-const GROUPS = [
-  {name:"Recruiting", active:true},
-  {name:"Transportation", active:true},
-  {name:"Enterprise", active:true},
-  {name:"Priority", active:true},
-  {name:"Pilot", active:true},
-  {name:"Internal", active:false},
-  {name:"Legacy Clients", active:false}
-];
+const GROUPS = ["Recruiting", "Transportation", "Enterprise", "Priority", "Pilot", "Internal"];
 const STORAGE_KEY = "client-admin-concept-v1";
 
 const seed = [
@@ -250,16 +250,9 @@ function selectClient(id){
   selectedId=id; draft=structuredClone(found); renderAll();
 }
 function renderGroups(){
-  const filter = $("groupFilter").value;
-  const visible = GROUPS.filter(g => filter==="all" || (filter==="active" ? g.active : !g.active));
-  $("groups").innerHTML = visible.map(g=>`
-    <label class="chip">
-      <input type="checkbox" value="${g.name}" ${draft.groups.includes(g.name)?"checked":""}>
-      ${g.name}
-      ${g.active ? "" : '<span style="font-size:10px;color:#667085">Inactive</span>'}
-    </label>
+  $("groups").innerHTML=GROUPS.map(g=>`
+    <label class="chip"><input type="checkbox" value="${g}" ${draft.groups.includes(g)?"checked":""}> ${g}</label>
   `).join("");
-  if(!visible.length) $("groups").innerHTML=`<div class="empty" style="padding:12px 0">No groups match this filter.</div>`;
   $("groups").querySelectorAll("input").forEach(i=>i.addEventListener("change",()=>{
     draft.groups=[...$("groups").querySelectorAll("input:checked")].map(x=>x.value);
   }));
@@ -351,7 +344,6 @@ $("generateZoomBtn").onclick=generateZoom;
 $("addRecruiterBtn").onclick=()=>{draft.recruiters.push("");renderRecruiters();setTimeout(()=>document.querySelector(".recruiter-input:last-child")?.focus(),0);}
 $("addMappingBtn").onclick=()=>{draft.mappings.push({from:"",to:""});renderMappings();setTimeout(()=>document.querySelector(".map-from:last-child")?.focus(),0);}
 $("search").oninput=renderClients;
-$("groupFilter").onchange=renderGroups;
 $("clientName").oninput=e=>draft.name=e.target.value;
 $("active").onchange=e=>draft.active=e.target.checked;
 $("accountNumber").oninput=e=>draft.accountNumber=e.target.value;
@@ -359,5 +351,6 @@ $("zoomNumber").oninput=e=>draft.zoomNumber=e.target.value;
 
 startNew();
 </script>
-</body>
-</html>
+
+
+</body></html>
