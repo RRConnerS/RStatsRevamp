@@ -1,1 +1,348 @@
-<h1>Title</h1>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Administration Concept</title>
+<style>
+:root{
+  --bg:#f6f7fb;--panel:#fff;--text:#172033;--muted:#667085;--line:#e4e7ec;
+  --primary:#4f46e5;--primary-dark:#4338ca;--danger:#d92d20;--success:#027a48;
+  --soft:#f2f4f7;--shadow:0 8px 30px rgba(16,24,40,.07);--radius:16px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit}
+.app{min-height:100vh;display:grid;grid-template-columns:250px 1fr}
+.sidebar{background:#101828;color:#fff;padding:24px 16px;display:flex;flex-direction:column}
+.brand{font-weight:800;font-size:18px;padding:4px 10px 28px}
+.brand span{color:#a5b4fc}
+.nav a{display:block;color:#d0d5dd;text-decoration:none;padding:11px 12px;border-radius:10px;margin:4px 0}
+.nav a.active,.nav a:hover{background:#1d2939;color:#fff}
+.sidebar-footer{margin-top:auto;color:#98a2b3;font-size:12px;padding:10px}
+main{padding:28px;max-width:1500px;width:100%;margin:auto}
+.topbar{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:24px}
+h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
+.subtitle{color:var(--muted);margin:0}
+.actions{display:flex;gap:10px}
+.btn{border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 15px;border-radius:10px;font-weight:700;cursor:pointer}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn.primary:hover{background:var(--primary-dark)}
+.btn.danger{color:var(--danger)}
+.btn.small{padding:7px 10px;font-size:13px}
+.layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:20px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.panel-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panel-head h2{font-size:15px;margin:0}
+.panel-body{padding:20px}
+.search{position:relative}
+.search input{width:100%;padding:11px 12px 11px 38px;border:1px solid var(--line);border-radius:10px;outline:none}
+.search-icon{position:absolute;left:12px;top:10px;color:#98a2b3}
+.client-list{padding:8px;max-height:calc(100vh - 260px);overflow:auto}
+.client-item{padding:12px;border-radius:11px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.client-item:hover{background:#f9fafb}
+.client-item.selected{background:#eef2ff}
+.client-name{font-weight:700}
+.client-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.status{font-size:11px;border-radius:999px;padding:3px 8px;font-weight:700;white-space:nowrap}
+.status.active{background:#ecfdf3;color:var(--success)}
+.status.inactive{background:#f2f4f7;color:#667085}
+.empty{padding:30px 12px;text-align:center;color:var(--muted)}
+.section{margin-bottom:22px}
+.section:last-child{margin-bottom:0}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.section-title h3{margin:0;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.field label{display:block;font-weight:700;margin-bottom:6px}
+.field input[type=text],.field input[type=number]{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 11px;outline:none;background:#fff}
+.field input:focus{border-color:#a5b4fc;box-shadow:0 0 0 3px #eef2ff}
+.field.full{grid-column:1/-1}
+.checkbox-row{display:flex;align-items:center;gap:9px;height:42px}
+.checkbox-row input{width:17px;height:17px;accent-color:var(--primary)}
+.helper{font-size:12px;color:var(--muted);margin-top:5px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid #d0d5dd;border-radius:999px;padding:7px 10px;background:#fff;cursor:pointer}
+.chip input{accent-color:var(--primary)}
+.account-row{display:grid;grid-template-columns:1fr auto;gap:9px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.table th{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.table tr:last-child td{border-bottom:0}
+.inline-input{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px}
+.table-actions{display:flex;gap:7px;white-space:nowrap}
+.mapping-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:9px;margin-top:10px}
+.toast{position:fixed;right:24px;bottom:24px;background:#101828;color:#fff;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);display:none;z-index:10}
+.toast.show{display:block}
+.note{background:#f8f9fc;border:1px solid var(--line);padding:12px;border-radius:10px;color:#475467;font-size:12px}
+@media(max-width:1050px){.app{grid-template-columns:1fr}.sidebar{display:none}.layout{grid-template-columns:1fr}.client-list{max-height:320px}.grid{grid-template-columns:1fr}}
+@media(max-width:650px){main{padding:16px}.topbar{flex-direction:column}.actions{width:100%}.actions .btn{flex:1}.mapping-grid{grid-template-columns:1fr}.account-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">Operations <span>Console</span></div>
+    <nav class="nav">
+      <a href="#" class="active">Clients</a>
+      <a href="#">Recruiters</a>
+      <a href="#">Mappings</a>
+      <a href="#">Settings</a>
+    </nav>
+    <div class="sidebar-footer">Front-end concept · Demo data stored locally</div>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div>
+        <h1>Client administration</h1>
+        <p class="subtitle">Create clients, organize groups, manage recruiters, and normalize recruiter names.</p>
+      </div>
+      <div class="actions">
+        <button class="btn" id="newBtn">+ New client</button>
+        <button class="btn primary" id="saveClientBtn">Save client</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Clients</h2>
+          <span id="clientCount" class="client-meta">3 total</span>
+        </div>
+        <div class="panel-body" style="padding-bottom:10px">
+          <div class="search">
+            <span class="search-icon">⌕</span>
+            <input id="search" type="text" placeholder="Search clients...">
+          </div>
+        </div>
+        <div id="clientList" class="client-list">
+    <div class="client-item " data-id="c7b439e9-402b-4b8c-95e1-88805d21e1cd">
+      <div><div class="client-name">Northstar Transport</div><div class="client-meta">NT-10021</div></div>
+      <span class="status active">Active</span>
+    </div>
+  
+    <div class="client-item " data-id="9758eed5-0f00-4465-86a7-3d04c4161c33">
+      <div><div class="client-name">Summit Freight</div><div class="client-meta">SF-10022</div></div>
+      <span class="status active">Active</span>
+    </div>
+  
+    <div class="client-item " data-id="957ecea5-9188-41de-af19-bd1966c5362f">
+      <div><div class="client-name">Blue Ridge Logistics</div><div class="client-meta">BR-10023</div></div>
+      <span class="status inactive">Inactive</span>
+    </div>
+  </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2 id="formTitle">New client</h2>
+          <button id="deleteClientBtn" class="btn small danger" style="visibility: hidden;">Delete client</button>
+        </div>
+        <div class="panel-body">
+          <div class="section">
+            <div class="section-title"><h3>Client details</h3></div>
+            <div class="grid">
+              <div class="field">
+                <label for="clientName">Client name</label>
+                <input id="clientName" type="text" placeholder="e.g. Acme Logistics">
+              </div>
+              <div class="field">
+                <label>Account status</label>
+                <div class="checkbox-row">
+                  <input id="active" type="checkbox">
+                  <label for="active" style="margin:0">Active client</label>
+                </div>
+              </div>
+              <div class="field">
+                <label for="accountNumber">Account number</label>
+                <input id="accountNumber" type="text" placeholder="Unique account number">
+                <div class="helper">Must be unique across clients.</div>
+              </div>
+              <div class="field">
+                <label for="zoomNumber">Zoom account #</label>
+                <div class="account-row">
+                  <input id="zoomNumber" type="text" placeholder="Not generated">
+                  <button class="btn small" id="generateZoomBtn">Generate</button>
+                </div>
+                <div class="helper">Demo generator only — no backend connection.</div>
+              </div>
+              <div class="field full">
+                <label>Client groups</label>
+                <div id="groups" class="chips">
+    <label class="chip"><input type="checkbox" value="Recruiting"> Recruiting</label>
+  
+    <label class="chip"><input type="checkbox" value="Transportation"> Transportation</label>
+  
+    <label class="chip"><input type="checkbox" value="Enterprise"> Enterprise</label>
+  
+    <label class="chip"><input type="checkbox" value="Priority"> Priority</label>
+  
+    <label class="chip"><input type="checkbox" value="Pilot"> Pilot</label>
+  
+    <label class="chip"><input type="checkbox" value="Internal"> Internal</label>
+  </div>
+                <div class="helper">A client can belong to one or multiple groups.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <div><h3>Recruiters</h3><div class="helper">Add the names used for this client.</div></div>
+              <button class="btn small" id="addRecruiterBtn">+ Add recruiter</button>
+            </div>
+            <div class="panel" style="box-shadow:none">
+              <div id="recruiterTableWrap">
+    <table class="table">
+      <thead><tr><th>Recruiter name</th><th></th></tr></thead>
+      <tbody><tr><td colspan="2" class="empty">No recruiters added yet.</td></tr></tbody>
+    </table></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <div><h3>Recruiter name mappings</h3><div class="helper">Normalize transcribed names into the canonical recruiter name.</div></div>
+              <button class="btn small" id="addMappingBtn">+ Add mapping</button>
+            </div>
+            <div class="note">Example: <strong>Jamie</strong> → <strong>James</strong>. The left side is the name detected in a transcript; the right side is the name you want returned.</div>
+            <div id="mappingWrap"><div class="empty" style="padding:20px 0">No mappings added yet.</div></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<div id="toast" class="toast"></div>
+
+<script>
+const GROUPS = ["Recruiting", "Transportation", "Enterprise", "Priority", "Pilot", "Internal"];
+const STORAGE_KEY = "client-admin-concept-v1";
+
+const seed = [
+  {id:crypto.randomUUID(),name:"Northstar Transport",active:true,accountNumber:"NT-10021",zoomNumber:"ZA-482913",groups:["Recruiting","Transportation"],recruiters:["James","Maria"],mappings:[{from:"Jamie",to:"James"}]},
+  {id:crypto.randomUUID(),name:"Summit Freight",active:true,accountNumber:"SF-10022",zoomNumber:"ZA-761204",groups:["Transportation","Priority"],recruiters:["Alex"],mappings:[]},
+  {id:crypto.randomUUID(),name:"Blue Ridge Logistics",active:false,accountNumber:"BR-10023",zoomNumber:"",groups:["Pilot"],recruiters:["Taylor"],mappings:[]}
+];
+
+let clients = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || seed;
+let selectedId = null;
+let draft = null;
+
+const $ = id => document.getElementById(id);
+function saveStore(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(clients)); }
+function showToast(msg){ $("toast").textContent=msg; $("toast").classList.add("show"); setTimeout(()=>$("toast").classList.remove("show"),2200); }
+function newDraft(){
+  return {id:crypto.randomUUID(),name:"",active:true,accountNumber:"",zoomNumber:"",groups:[],recruiters:[],mappings:[]};
+}
+function startNew(){
+  selectedId=null; draft=newDraft(); renderAll();
+}
+function selectClient(id){
+  const found=clients.find(c=>c.id===id); if(!found)return;
+  selectedId=id; draft=structuredClone(found); renderAll();
+}
+function renderGroups(){
+  $("groups").innerHTML=GROUPS.map(g=>`
+    <label class="chip"><input type="checkbox" value="${g}" ${draft.groups.includes(g)?"checked":""}> ${g}</label>
+  `).join("");
+  $("groups").querySelectorAll("input").forEach(i=>i.addEventListener("change",()=>{
+    draft.groups=[...$("groups").querySelectorAll("input:checked")].map(x=>x.value);
+  }));
+}
+function renderClients(){
+  const q=$("search").value.toLowerCase().trim();
+  const filtered=clients.filter(c=>c.name.toLowerCase().includes(q)||c.accountNumber.toLowerCase().includes(q));
+  $("clientCount").textContent=`${clients.length} total`;
+  $("clientList").innerHTML=filtered.length ? filtered.map(c=>`
+    <div class="client-item ${c.id===selectedId?"selected":""}" data-id="${c.id}">
+      <div><div class="client-name">${escapeHtml(c.name||"Unnamed client")}</div><div class="client-meta">${escapeHtml(c.accountNumber||"No account #")}</div></div>
+      <span class="status ${c.active?"active":"inactive"}">${c.active?"Active":"Inactive"}</span>
+    </div>
+  `).join("") : `<div class="empty">No clients found.</div>`;
+  $("clientList").querySelectorAll(".client-item").forEach(el=>el.onclick=()=>selectClient(el.dataset.id));
+}
+function renderRecruiters(){
+  const rows=draft.recruiters.map((r,i)=>`
+    <tr>
+      <td><input class="inline-input recruiter-input" data-index="${i}" value="${escapeAttr(r)}" placeholder="Recruiter name"></td>
+      <td style="width:90px"><button class="btn small danger delete-recruiter" data-index="${i}">Delete</button></td>
+    </tr>
+  `).join("");
+  $("recruiterTableWrap").innerHTML=`
+    <table class="table">
+      <thead><tr><th>Recruiter name</th><th></th></tr></thead>
+      <tbody>${rows || `<tr><td colspan="2" class="empty">No recruiters added yet.</td></tr>`}</tbody>
+    </table>`;
+  document.querySelectorAll(".recruiter-input").forEach(i=>i.oninput=()=>draft.recruiters[+i.dataset.index]=i.value);
+  document.querySelectorAll(".delete-recruiter").forEach(b=>b.onclick=()=>{draft.recruiters.splice(+b.dataset.index,1);renderRecruiters();});
+}
+function renderMappings(){
+  $("mappingWrap").innerHTML=draft.mappings.length ? draft.mappings.map((m,i)=>`
+    <div class="mapping-grid">
+      <input class="inline-input map-from" data-index="${i}" value="${escapeAttr(m.from)}" placeholder="Transcribed name, e.g. Jamie">
+      <input class="inline-input map-to" data-index="${i}" value="${escapeAttr(m.to)}" placeholder="Canonical name, e.g. James">
+      <button class="btn small danger delete-map" data-index="${i}">Delete</button>
+    </div>
+  `).join("") : `<div class="empty" style="padding:20px 0">No mappings added yet.</div>`;
+  document.querySelectorAll(".map-from").forEach(i=>i.oninput=()=>draft.mappings[+i.dataset.index].from=i.value);
+  document.querySelectorAll(".map-to").forEach(i=>i.oninput=()=>draft.mappings[+i.dataset.index].to=i.value);
+  document.querySelectorAll(".delete-map").forEach(b=>b.onclick=()=>{draft.mappings.splice(+b.dataset.index,1);renderMappings();});
+}
+function renderForm(){
+  $("formTitle").textContent=selectedId?"Edit client":"New client";
+  $("clientName").value=draft.name;
+  $("active").checked=draft.active;
+  $("accountNumber").value=draft.accountNumber;
+  $("zoomNumber").value=draft.zoomNumber;
+  $("deleteClientBtn").style.visibility=selectedId?"visible":"hidden";
+  renderGroups();renderRecruiters();renderMappings();
+}
+function renderAll(){renderClients();renderForm();}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
+function escapeAttr(v){return escapeHtml(v);}
+function normalize(v){return String(v).trim().toLowerCase();}
+function uniqueAccount(account, ignoreId){
+  return account && clients.some(c=>c.id!==ignoreId && normalize(c.accountNumber)===normalize(account));
+}
+function saveClient(){
+  draft.name=$("clientName").value.trim();
+  draft.active=$("active").checked;
+  draft.accountNumber=$("accountNumber").value.trim();
+  draft.zoomNumber=$("zoomNumber").value.trim();
+  if(!draft.name){showToast("Client name is required.");$("clientName").focus();return;}
+  if(!draft.accountNumber){showToast("Account number is required.");$("accountNumber").focus();return;}
+  if(uniqueAccount(draft.accountNumber,selectedId)){showToast("That account number is already in use.");$("accountNumber").focus();return;}
+  if(draft.recruiters.some(r=>!r.trim())){showToast("Remove or complete blank recruiter rows.");return;}
+  draft.recruiters=draft.recruiters.map(r=>r.trim());
+  draft.mappings=draft.mappings.map(m=>({from:m.from.trim(),to:m.to.trim()})).filter(m=>m.from||m.to);
+  const idx=clients.findIndex(c=>c.id===draft.id);
+  if(idx>=0) clients[idx]=structuredClone(draft); else clients.unshift(structuredClone(draft));
+  selectedId=draft.id;saveStore();renderAll();showToast("Client saved.");
+}
+function deleteClient(){
+  if(!selectedId)return;
+  const c=clients.find(x=>x.id===selectedId);
+  if(!confirm(`Delete "${c?.name||"this client"}"? This cannot be undone in the demo.`))return;
+  clients=clients.filter(x=>x.id!==selectedId);saveStore();startNew();showToast("Client deleted.");
+}
+function generateZoom(){
+  let n; do{n=Math.floor(100000+Math.random()*900000)}while(clients.some(c=>c.zoomNumber===`ZA-${n}`));
+  draft.zoomNumber=`ZA-${n}`;$("zoomNumber").value=draft.zoomNumber;showToast("Zoom account number generated.");
+}
+$("newBtn").onclick=startNew;
+$("saveClientBtn").onclick=saveClient;
+$("deleteClientBtn").onclick=deleteClient;
+$("generateZoomBtn").onclick=generateZoom;
+$("addRecruiterBtn").onclick=()=>{draft.recruiters.push("");renderRecruiters();setTimeout(()=>document.querySelector(".recruiter-input:last-child")?.focus(),0);}
+$("addMappingBtn").onclick=()=>{draft.mappings.push({from:"",to:""});renderMappings();setTimeout(()=>document.querySelector(".map-from:last-child")?.focus(),0);}
+$("search").oninput=renderClients;
+$("clientName").oninput=e=>draft.name=e.target.value;
+$("active").onchange=e=>draft.active=e.target.checked;
+$("accountNumber").oninput=e=>draft.accountNumber=e.target.value;
+$("zoomNumber").oninput=e=>draft.zoomNumber=e.target.value;
+
+startNew();
+</script>
+
+
+</body></html>
