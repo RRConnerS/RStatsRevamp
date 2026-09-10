@@ -233,13 +233,13 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
 <div id="toast" class="toast"></div>
 
 <script>
-const GROUPS = ["Recruiting", "Transportation", "Enterprise", "Priority", "Pilot", "Internal"];
+const GROUPS = ["Manual Batch - Randall Reilly - CDR Paid", "CDR Paid - LLM", "CDR Unpaid - LLM", "CDR Digital - LLM", "RPO - Outbound - LLM", "Connect - LLM", "RPO - Inbound - LLM", "Diesel Tech - LLM"];
 const STORAGE_KEY = "client-admin-concept-v1";
 
 const seed = [
-  {id:crypto.randomUUID(),name:"Northstar Transport",active:true,accountNumber:"NT-10021",zoomNumber:"ZA-482913",groups:["Recruiting","Transportation"],recruiters:["James","Maria"],mappings:[{from:"Jamie",to:"James"}]},
-  {id:crypto.randomUUID(),name:"Summit Freight",active:true,accountNumber:"SF-10022",zoomNumber:"ZA-761204",groups:["Transportation","Priority"],recruiters:["Alex"],mappings:[]},
-  {id:crypto.randomUUID(),name:"Blue Ridge Logistics",active:false,accountNumber:"BR-10023",zoomNumber:"",groups:["Pilot"],recruiters:["Taylor"],mappings:[]}
+  {id:crypto.randomUUID(),name:"Northstar Transport",active:true,accountNumber:"510021",zoomNumber:"",groups:["Manual Batch - Randall Reilly - CDR Paid","Transportation"],recruiters:["James","Maria"],mappings:[{from:"Jamie",to:"James"}]},
+  {id:crypto.randomUUID(),name:"Summit Freight",active:true,accountNumber:"100422",zoomNumber:"",groups:["CDR Paid - LLM","Diesel Tech - LLM"],recruiters:["Alex"],mappings:[]},
+  {id:crypto.randomUUID(),name:"Blue Ridge Logistics",active:false,accountNumber:"108023",zoomNumber:"9e107d9d372bb6826bd81d3542a419d6",groups:["RPO - Outbound - LLM", "RPO - Inbound - LLM"],recruiters:["Taylor"],mappings:[]}
 ];
 
 let clients = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || seed;
