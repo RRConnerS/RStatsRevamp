@@ -122,17 +122,17 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:-.5px}
         </div>
         <div id="clientList" class="client-list">
     <div class="client-item " data-id="e30e94e0-9243-40a2-9cff-26b07a08db9a">
-      <div><div class="client-name">Northstar Transport</div><div class="client-meta">NT-10021</div></div>
+      <div><div class="client-name">Northstar Transport</div><div class="client-meta">510021</div></div>
       <span class="status active">Active</span>
     </div>
   
     <div class="client-item " data-id="ced8e204-04f9-40c0-b8de-23b9511dd96b">
-      <div><div class="client-name">Summit Freight</div><div class="client-meta">SF-10022</div></div>
+      <div><div class="client-name">Summit Freight</div><div class="client-meta">100422</div></div>
       <span class="status active">Active</span>
     </div>
   
     <div class="client-item " data-id="204fd869-e29f-4d35-a606-8bd4a1437639">
-      <div><div class="client-name">Blue Ridge Logistics</div><div class="client-meta">BR-10023</div></div>
+      <div><div class="client-name">Blue Ridge Logistics</div><div class="client-meta"></div></div>
       <span class="status inactive">Inactive</span>
     </div>
   </div>
@@ -238,8 +238,8 @@ const STORAGE_KEY = "client-admin-concept-v1";
 
 const seed = [
   {id:crypto.randomUUID(),name:"Northstar Transport",active:true,accountNumber:"510021",zoomNumber:"",groups:["Manual Batch - Randall Reilly - CDR Paid","Transportation"],recruiters:["James","Maria"],mappings:[{from:"Jamie",to:"James"}]},
-  {id:crypto.randomUUID(),name:"Summit Freight",active:true,accountNumber:"100422",zoomNumber:"",groups:["CDR Paid - LLM","Diesel Tech - LLM"],recruiters:["Alex"],mappings:[]},
-  {id:crypto.randomUUID(),name:"Blue Ridge Logistics",active:false,accountNumber:"108023",zoomNumber:"9e107d9d372bb6826bd81d3542a419d6",groups:["RPO - Outbound - LLM", "RPO - Inbound - LLM"],recruiters:["Taylor"],mappings:[]}
+  {id:crypto.randomUUID(),name:"Summit Freight",active:false,accountNumber:"100422",zoomNumber:"",groups:["CDR Paid - LLM","Diesel Tech - LLM"],recruiters:["Alex"],mappings:[]},
+  {id:crypto.randomUUID(),name:"Blue Ridge Logistics",active:true,accountNumber:"",zoomNumber:"9e107d9d372bb6826bd81d3542a419d6",groups:["RPO - Outbound - LLM", "RPO - Inbound - LLM"],recruiters:["Taylor"],mappings:[]}
 ];
 
 let clients = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || seed;
